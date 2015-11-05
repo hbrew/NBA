@@ -1,5 +1,4 @@
 #!/bin/python
-from lineup import Lineup
 
 # Sort the players by position
 def getPositions(players):
