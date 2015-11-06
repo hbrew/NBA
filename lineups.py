@@ -95,11 +95,14 @@ def run(players):
 	m = 0
 	n = 9 # limited samples for speed
 	options = getOptions(pgs[m:n], sgs[m:n], sfs[m:n], pfs[m:n], cs[m:n])
-	scores = [option[1] for option in options]
+	
+	
 	## Return single best team
+	#scores = [option[1] for option in options]
 	#best = max(scores)
 	#bestIdx = [n for n,m in enumerate(scores) if m == best]
 	#return [options[n] for n in bestIdx]
+	
 	## Return a set of the best teams
 	options = sorted(options, key=lambda x: x[1], reverse=True)
 	return options[0:5]

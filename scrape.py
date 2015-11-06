@@ -23,9 +23,9 @@ playerStatsURL = 'http://stats.nba.com/stats/leaguedashplayerstats?College=&Conf
 # playerStatsURL = 'http://stats.nba.com/stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2014-15&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=0&VsConference=&VsDivision=&Weight='
 
 # Dated line up #
-lineupURL = 'https://rotogrinders.com/lineups/nba?date=2015-11-05&site=fanduel'
+#lineupURL = 'https://rotogrinders.com/lineups/nba?date=2015-11-05&site=fanduel'
 # Current line up #
-#lineupURL = 'https://rotogrinders.com/lineups/nba?site=fanduel'
+lineupURL = 'https://rotogrinders.com/lineups/nba?site=fanduel'
 
 # Parse numeric salary from things like $8.2k
 def parseSalary(salary):
@@ -41,7 +41,7 @@ def parseName(name):
 # Roto marks people who aren't playing with projected points of 0
 def cleanLineup(names, pos, salaries, points):
 	for n in reversed(range(len(points))):
-		if points[n] == 0:
+		if points[n] == 0 or salaries[n] == 0:
 			del names[n]
 			del pos[n]
 			del salaries[n]
