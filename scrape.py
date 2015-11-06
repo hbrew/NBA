@@ -10,11 +10,21 @@ from defense import Defense
 from player import Player
 
 ## Relevant URLS ##
+# Current Player Stats #
 defenseURL = 'http://stats.nba.com/stats/leaguedashteamstats?Conference=&DateFrom=&DateTo=&Division=&GameScope=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Opponent&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2015-16&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=0&VsConference=&VsDivision='
 defenseFG3URL = 'http://stats.nba.com/stats/leaguedashptteamdefend?DefenseCategory=3+Pointers&LastNGames=0&LeagueID=00&Month=0&OpponentTeamID=0&PORound=0&PerMode=PerGame&Period=0&Season=2015-16&SeasonType=Regular+Season&TeamID=0'
 defenseFG2URL = 'http://stats.nba.com/stats/leaguedashptteamdefend?DefenseCategory=2+Pointers&LastNGames=0&LeagueID=00&Month=0&OpponentTeamID=0&PORound=0&PerMode=PerGame&Period=0&Season=2015-16&SeasonType=Regular+Season&TeamID=0'
 playerStatsURL = 'http://stats.nba.com/stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2015-16&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=0&VsConference=&VsDivision=&Weight='
-lineupURL = 'https://rotogrinders.com/lineups/nba?date=2015-11-04&site=fanduel'
+
+# 2014-15 stats #
+# defenseURL = 'http://stats.nba.com/stats/leaguedashteamstats?Conference=&DateFrom=&DateTo=&Division=&GameScope=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Opponent&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2014-15&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=0&VsConference=&VsDivision='
+# defenseFG3URL = 'http://stats.nba.com/stats/leaguedashptteamdefend?DefenseCategory=3+Pointers&LastNGames=0&LeagueID=00&Month=0&OpponentTeamID=0&PORound=0&PerMode=PerGame&Period=0&Season=2014-15&SeasonType=Regular+Season&TeamID=0'
+# defenseFG2URL = 'http://stats.nba.com/stats/leaguedashptteamdefend?DefenseCategory=2+Pointers&LastNGames=0&LeagueID=00&Month=0&OpponentTeamID=0&PORound=0&PerMode=PerGame&Period=0&Season=2014-15&SeasonType=Regular+Season&TeamID=0'
+# playerStatsURL = 'http://stats.nba.com/stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2014-15&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=0&VsConference=&VsDivision=&Weight='
+
+# Dated line up #
+lineupURL = 'https://rotogrinders.com/lineups/nba?date=2015-11-05&site=fanduel'
+# Current line up #
 #lineupURL = 'https://rotogrinders.com/lineups/nba?site=fanduel'
 
 # Parse numeric salary from things like $8.2k
@@ -61,9 +71,9 @@ def getLineups():
 	page = requests.get(lineupURL)
 	tree = html.fromstring(page.text)
 	positions = tree.xpath('//li[@class="player"]/@data-pos')
-	# salaries = tree.xpath('//li[@class="player"]/@data-salary')
-	# salaries = [parseSalary(s) for s in salaries]
-	salaries = altSalaries(tree)
+	salaries = tree.xpath('//li[@class="player"]/@data-salary')
+	salaries = [parseSalary(s) for s in salaries]
+	# salaries = altSalaries(tree)
 	points = tree.xpath('//span[@class="fpts"]/text()')
 	points = [float(p) for p in points]
 	names = tree.xpath('//a[@class="player-popup"]/@title')

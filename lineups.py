@@ -19,7 +19,11 @@ def getPositions(players):
 			sfs.append(players[key])
 		elif pos == 'C':
 			cs.append(players[key])
-	return pgs, pfs, sgs, sfs, cs
+	return pgs, sgs, sfs, pfs, cs
+
+# Sort players by points/cost
+def sortEff(players):
+	return sorted(players, key=lambda x: x.EFF, reverse=True)
 
 # Check each possible lineup and save the score
 def getOptions(pgs, pfs, sgs, sfs, cs):
@@ -29,64 +33,74 @@ def getOptions(pgs, pfs, sgs, sfs, cs):
 		for m in range(1,len(pgs)):
 			if l >= m:
 				continue
-			for n in range(len(pfs)):
-				for o in range(1,len(pfs)):
+			for n in range(len(sgs)):
+				for o in range(1,len(sgs)):
 					if n >= o:
 						continue
-					for p in range(len(sgs)):
-						for q in range(1,len(sgs)):
+					for p in range(len(sfs)):
+						for q in range(1,len(sfs)):
 							if p >= q:
 								continue
-							for r in range(len(sfs)):
-								for s in range(1,len(sfs)):
+							for r in range(len(pfs)):
+								for s in range(1,len(pfs)):
 									if r >= s:
 										continue
 									for t in range(len(cs)):
 										cost = (
 											pgs[l].SALARY + 
 											pgs[m].SALARY + 
-											pfs[n].SALARY + 
-											pfs[o].SALARY + 
-											sgs[p].SALARY + 
-											sgs[q].SALARY + 
-											sfs[r].SALARY + 
-											sfs[s].SALARY + 
+											sgs[n].SALARY + 
+											sgs[o].SALARY + 
+											sfs[p].SALARY + 
+											sfs[q].SALARY + 
+											pfs[r].SALARY + 
+											pfs[s].SALARY + 
 											cs[t].SALARY
 										)
 										if cost < budget:
 											score = (
 												pgs[l].SCORE + 
 												pgs[m].SCORE + 
-												pfs[n].SCORE + 
-												pfs[o].SCORE + 
-												sgs[p].SCORE + 
-												sgs[q].SCORE + 
-												sfs[r].SCORE + 
-												sfs[s].SCORE + 
+												sgs[n].SCORE + 
+												sgs[o].SCORE + 
+												sfs[p].SCORE + 
+												sfs[q].SCORE + 
+												pfs[r].SCORE + 
+												pfs[s].SCORE + 
 												cs[t].SCORE
 											)
 											names = (
 												pgs[l].NAME, 
 												pgs[m].NAME, 
-												pfs[n].NAME, 
-												pfs[o].NAME, 
-												sgs[p].NAME, 
-												sgs[q].NAME, 
-												sfs[r].NAME, 
-												sfs[s].NAME, 
+												sgs[n].NAME, 
+												sgs[o].NAME, 
+												sfs[p].NAME, 
+												sfs[q].NAME, 
+												pfs[r].NAME, 
+												pfs[s].NAME, 
 												cs[t].NAME
 											)
-											options.append((names, score, cost))
+											options.append((names, score))
 	return options
 
 
 
 def run(players):
-	pgs, pfs, sgs, sfs, cs = getPositions(players)
-	n = 5 # limited samples for speed
-	options = getOptions(pgs[0:n], pfs[0:n], sgs[0:n], sfs[0:n], cs[0:n])
+	pgs, sgs, sfs, pfs, cs = getPositions(players)
+	pgs = sortEff(pgs)
+	pfs = sortEff(pfs)
+	sgs = sortEff(sgs)
+	sfs = sortEff(sfs)
+	cs = sortEff(cs)
+	m = 0
+	n = 9 # limited samples for speed
+	options = getOptions(pgs[m:n], sgs[m:n], sfs[m:n], pfs[m:n], cs[m:n])
 	scores = [option[1] for option in options]
-	best = max(scores)
-	bestIdx = [n for n,m in enumerate(scores) if m == best]
-	return [options[n] for n in bestIdx]
+	## Return single best team
+	#best = max(scores)
+	#bestIdx = [n for n,m in enumerate(scores) if m == best]
+	#return [options[n] for n in bestIdx]
+	## Return a set of the best teams
+	options = sorted(options, key=lambda x: x[1], reverse=True)
+	return options[0:5]
 

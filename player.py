@@ -42,6 +42,7 @@ class Player:
 		tov = self.TOV*(1 + self.OPP.TOV)
 		cats = [fg3pt, fg2pt, ft, rbd, ast, blk, stl, tov]
 		self.SCORE = sum([a*b for a,b in zip(cats, self.scoring)])
+		self.EFF = self.SCORE / self.SALARY
 
 
 
